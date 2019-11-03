@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Gerate QRCode</string>
+    <string name="qr_generate">Leitor QRCode</string>
+</resources>
