@@ -1,15 +1,18 @@
 package com.example.gerateqrcode.QRCode;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Xml;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,11 +26,11 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.graphics.Color.BLACK;
 import static android.graphics.Color.WHITE;
 
 public class QrGenerate extends AppCompatActivity {
 
-    private static final int BLACK = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class QrGenerate extends AppCompatActivity {
 
     public void qrGenerator(View view){
         try {
+            hideKeyboardFrom(this, view);
             WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
             Display display = manager.getDefaultDisplay();
             Point point = new Point();
@@ -53,7 +57,7 @@ public class QrGenerate extends AppCompatActivity {
             createQRCode(qrCodeData, charSet, hintMap, smaillesDimension, smaillesDimension);
 
         }catch (Exception e){
-
+            Toast.makeText(this, "Error -> " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -72,16 +76,21 @@ public class QrGenerate extends AppCompatActivity {
                 }
             }
 
-            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444);
             bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 
             ImageView img = (ImageView) findViewById(R.id.imageView1);
             img.setImageBitmap(bitmap);
 
         } catch (Exception e){
+            Toast.makeText(this, "Campo texto vazio ", Toast.LENGTH_LONG).show();
             Log.e("QrGenerate",e.getMessage());
         }
     }
 
 
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

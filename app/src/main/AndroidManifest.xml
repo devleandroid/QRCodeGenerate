@@ -21,7 +21,8 @@
         </activity>
 
         <activity android:name=".QRCode.QrReader" />
-        <activity android:name="QRCode.QrGenerate"
+        <activity android:name=".QRCode.QrCode" />
+        <activity android:name=".QRCode.QrGenerate"
             android:label="@string/qr_generate"/>
     </application>
 
